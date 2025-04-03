@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据批量处理工具</title>
+    <link rel="stylesheet" href="/run/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Excel 文件处理工具</h1>
+        <input type="text" id="api_key" placeholder="输入您的API Key" />
+        <input type="file" id="fileInput" accept=".csv, .xlsx" />
+        <input type="text" id="modelInput" placeholder="输入模型名称 (例如: qwen-plus)" />
+        <input type="text" id="systemInput" placeholder="输入prompt" />
+        <button id="downloadBtn">模板下载</button>
+        <button id="startBtn">开始批处理</button>
+        <div id="progressBar">
+            <div id="progress"></div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="/run/script.js"></script>
+</body>
+</html>
