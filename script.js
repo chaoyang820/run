@@ -3,6 +3,10 @@ async function fetchModelResponse(number) {
     const system = document.getElementById('systemInput').value || 'You are a helpful assistant.';
     const api_key = document.getElementById('api_key').value;
 
+    const toggleSwitch = document.getElementById('toggle-switch');
+    console.log(toggleSwitch);
+
+    
     try {
         const startTime = Date.now(); // 记录请求开始时间
         const response = await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', {
@@ -22,7 +26,10 @@ async function fetchModelResponse(number) {
                         role: 'user',
                         content: `${number}`
                     }
-                ]
+                ],
+                temperature: 0.7,
+                top_p: 0.8,
+                extra_body: {"enable_search": toggleSwitch}
             })
         });
 
@@ -37,7 +44,7 @@ async function fetchModelResponse(number) {
             content: data.choices[0].message.content,
             prompt_tokens: data.usage.prompt_tokens,
             completion_tokens: data.usage.completion_tokens,
-            cachedtokens: data.usage.cachedtokens || 0, // 假设cachedtokens可能不存在，默认值为0
+            cachedtokens: data.usage.prompt_tokens_details?.cached_tokens || 0, // 假设cachedtokens可能不存在，默认值为0
             time_consuming: time_consuming.toFixed(3) // 添加耗时信息
         };
     } catch (error) {
@@ -129,6 +136,8 @@ document.getElementById('startBtn').addEventListener('click', async function() {
 
     // Save file
     XLSX.writeFile(newWorkbook, 'converted_data.xlsx');
+
+    
 });
 
 function generateSampleExcel() {
@@ -154,3 +163,5 @@ function updateProgress(percentage, current, total) {
     progress.style.width = `${percentage}%`;
     progressBar.setAttribute('data-progress', `处理中: ${current}/${total}`);
 }
+
+
