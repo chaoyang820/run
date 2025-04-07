@@ -2,10 +2,7 @@ async function fetchModelResponse(number) {
     const model = document.getElementById('modelInput').value || 'qwen-plus';
     const system = document.getElementById('systemInput').value || 'You are a helpful assistant.';
     const api_key = document.getElementById('api_key').value;
-
-    const toggleSwitch = document.getElementById('toggle-switch');
-    console.log(toggleSwitch);
-
+    let toggleSwitch = document.getElementById('toggle-switch').checked;
     
     try {
         const startTime = Date.now(); // 记录请求开始时间
@@ -29,10 +26,10 @@ async function fetchModelResponse(number) {
                 ],
                 temperature: 0.7,
                 top_p: 0.8,
-                extra_body: {"enable_search": toggleSwitch}
+                enable_search: toggleSwitch
             })
         });
-
+            
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -101,7 +98,7 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
     const reader = new FileReader();
     reader.onload = function(e) {
         const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, {type: 'array'});
+        const workbook = XLSX.read(data, {type: 'array', codepage: 65001}); // 指定UTF-8编码
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const json = XLSX.utils.sheet_to_json(worksheet);
@@ -134,10 +131,8 @@ document.getElementById('startBtn').addEventListener('click', async function() {
     const newWorkbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(newWorkbook, newWorksheet, 'Converted Data');
 
-    // Save file
-    XLSX.writeFile(newWorkbook, 'converted_data.xlsx');
-
-    
+    // Save file with UTF-8 encoding
+    XLSX.writeFile(newWorkbook, 'converted_data.xlsx', {bookType: 'xlsx', type: 'array', codepage: 65001});
 });
 
 function generateSampleExcel() {
@@ -164,4 +159,9 @@ function updateProgress(percentage, current, total) {
     progressBar.setAttribute('data-progress', `处理中: ${current}/${total}`);
 }
 
+const toggleSwitch = document.getElementById('toggle-switch');
 
+toggleSwitch.addEventListener('change', function() {
+    console.log('开关状态：', toggleSwitch.checked);
+    
+});
