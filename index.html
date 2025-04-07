@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>数据批量处理工具</title>
-    <link rel="stylesheet" href="/run/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
@@ -13,6 +13,10 @@
         <input type="file" id="fileInput" accept=".csv, .xlsx" />
         <input type="text" id="modelInput" placeholder="输入模型名称 (例如: qwen-plus)" />
         <input type="text" id="systemInput" placeholder="输入prompt" />
+   
+        <input type="checkbox" id="toggle-switch">
+        <label for="toggle-switch"></label>
+
         <button id="downloadBtn">模板下载</button>
         <button id="startBtn">开始批处理</button>
         <div id="progressBar">
@@ -20,6 +24,6 @@
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="/run/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
