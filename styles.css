@@ -63,3 +63,44 @@ button:hover {
     transition: width 0.3s;
     border-radius: 5px;
 }
+
+
+/* 隐藏原生复选框 */
+#toggle-switch {
+    display: none;
+  }
+  
+  /* 设计开关按钮样式 */
+  label {
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+    background-color: #ccc;
+    border-radius: 25px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* 设计开关按钮的圆形滑块样式 */
+  label::after {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2.5px;
+    left: 2.5px;
+    transition: transform 0.3s ease;
+  }
+  
+  /* 复选框选中时的样式变化 */
+  #toggle-switch:checked + label {
+    background-color: #6c7ae0;
+  }
+  
+  #toggle-switch:checked + label::after {
+    transform: translateX(25px);
+  }
