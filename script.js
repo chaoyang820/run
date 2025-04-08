@@ -3,7 +3,28 @@ async function fetchModelResponse(number) {
     const system = document.getElementById('systemInput').value || 'You are a helpful assistant.';
     const api_key = document.getElementById('api_key').value;
     let toggleSwitch = document.getElementById('toggle-switch').checked;
-    
+    let topPSlider = parseFloat(document.getElementById('top_p_slider').value) || 0.8;
+    let temperatureSlider = parseFloat(document.getElementById('temperature_slider').value) || 0.7;
+
+    body_data = JSON.stringify({
+        model: model,
+        messages: [
+            {
+                role: 'system',
+                content: system
+            },
+            {
+                role: 'user',
+                content: `${number}`
+            }
+        ],
+        temperature: temperatureSlider,
+        top_p: topPSlider,
+        enable_search: toggleSwitch
+    })
+
+    console.log(body_data)
+
     try {
         const startTime = Date.now(); // 记录请求开始时间
         const response = await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', {
@@ -12,22 +33,7 @@ async function fetchModelResponse(number) {
                 'Authorization': `Bearer ${api_key}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                model: model,
-                messages: [
-                    {
-                        role: 'system',
-                        content: system
-                    },
-                    {
-                        role: 'user',
-                        content: `${number}`
-                    }
-                ],
-                temperature: 0.7,
-                top_p: 0.8,
-                enable_search: toggleSwitch
-            })
+            body: body_data
         });
             
         if (!response.ok) {
@@ -35,6 +41,7 @@ async function fetchModelResponse(number) {
         }
 
         const data = await response.json();
+        console.log(data)
         const endTime = Date.now(); // 记录请求结束时间
         const time_consuming = (endTime - startTime) / 1000; // 计算请求耗时并转换为秒
         return {
@@ -164,4 +171,34 @@ const toggleSwitch = document.getElementById('toggle-switch');
 toggleSwitch.addEventListener('change', function() {
     console.log('开关状态：', toggleSwitch.checked);
     
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  const topPInput = document.getElementById('top_p_input');
+  const topPSlider = document.getElementById('top_p_slider');
+  const temperatureInput = document.getElementById('temperature_input');
+  const temperatureSlider = document.getElementById('temperature_slider');
+
+  topPInput.addEventListener('input', function () {
+    const value = parseFloat(this.value);
+    if (!isNaN(value) && value >= 0.1 && value <= 1) {
+      topPSlider.value = value;
+    }
+  });
+
+  topPSlider.addEventListener('input', function () {
+    topPInput.value = this.value;
+  });
+
+  temperatureInput.addEventListener('input', function () {
+    const value = parseFloat(this.value);
+    if (!isNaN(value) && value >= 0.1 && value <= 1.9) {
+      temperatureSlider.value = value;
+    }
+  });
+
+  temperatureSlider.addEventListener('input', function () {
+    temperatureInput.value = this.value;
+  });
 });
