@@ -64,16 +64,16 @@ async function fetchModelResponse(number) {
 }
 
 async function convertNumbersToWords(data) {
-    const convertedData = [];
+    const answerData = [];
     const total = data.length;
     for (let i = 0; i < total; i++) {
         const row = data[i];
         if (row.user) {
             try {
                 const response = await fetchModelResponse(row.user);
-                convertedData.push({
+                answerData.push({
                     ...row,
-                    converted: response.content,
+                    answer: response.content,
                     prompt_tokens: response.prompt_tokens,
                     completion_tokens: response.completion_tokens,
                     cachedtokens: response.cachedtokens,
@@ -81,9 +81,9 @@ async function convertNumbersToWords(data) {
                 });
             } catch (error) {
                 console.error('Error converting number to word:', error);
-                convertedData.push({
+                answerData.push({
                     ...row,
-                    converted: `error: ${error.message}`,
+                    answer: `error: ${error.message}`,
                     prompt_tokens: 0,
                     completion_tokens: 0,
                     cachedtokens: 0,
@@ -91,11 +91,11 @@ async function convertNumbersToWords(data) {
                 });
             }
         } else {
-            convertedData.push(row);
+            answerData.push(row);
         }
         updateProgress(((i + 1) / total) * 100, i + 1, total);
     }
-    return convertedData;
+    return answerData;
 }
 
 document.getElementById('fileInput').addEventListener('change', function(event) {
@@ -130,16 +130,16 @@ document.getElementById('startBtn').addEventListener('click', async function() {
     progressBar.style.display = 'block';
 
     // Convert data and update progress
-    const convertedData = await convertNumbersToWords(window.parsedData);
+    const answerData = await convertNumbersToWords(window.parsedData);
     updateProgress(100);
 
-    // Create new workbook with original and converted data
-    const newWorksheet = XLSX.utils.json_to_sheet(convertedData);
+    // Create new workbook with original and answer data
+    const newWorksheet = XLSX.utils.json_to_sheet(answerData);
     const newWorkbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(newWorkbook, newWorksheet, 'Converted Data');
+    XLSX.utils.book_append_sheet(newWorkbook, newWorksheet, 'answer Data');
 
     // Save file with UTF-8 encoding
-    XLSX.writeFile(newWorkbook, 'converted_data.xlsx', {bookType: 'xlsx', type: 'array', codepage: 65001});
+    XLSX.writeFile(newWorkbook, 'answer_data.xlsx', {bookType: 'xlsx', type: 'array', codepage: 65001});
 });
 
 function generateSampleExcel() {
