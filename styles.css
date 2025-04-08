@@ -64,14 +64,13 @@ button:hover {
     border-radius: 5px;
 }
 
-
 /* 隐藏原生复选框 */
 #toggle-switch {
     display: none;
-  }
-  
-  /* 设计开关按钮样式 */
-  label {
+}
+
+/* 设计开关按钮样式 */
+label {
     display: inline-block;
     width: 50px;
     height: 25px;
@@ -80,10 +79,10 @@ button:hover {
     position: relative;
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
-  
-  /* 设计开关按钮的圆形滑块样式 */
-  label::after {
+}
+
+/* 设计开关按钮的圆形滑块样式 */
+label::after {
     content: "";
     display: block;
     width: 20px;
@@ -94,13 +93,39 @@ button:hover {
     top: 2.5px;
     left: 2.5px;
     transition: transform 0.3s ease;
-  }
-  
-  /* 复选框选中时的样式变化 */
-  #toggle-switch:checked + label {
+}
+
+/* 复选框选中时的样式变化 */
+#toggle-switch:checked + label {
     background-color: #6c7ae0;
-  }
-  
-  #toggle-switch:checked + label::after {
+}
+
+#toggle-switch:checked + label::after {
     transform: translateX(25px);
-  }
+}
+
+/* 新增样式，使文字和开关在同一行 */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 新增：使内容两端对齐 */
+    gap: 10px;
+    width: 300px;
+}
+
+
+.input-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 新增：使内容两端对齐 */
+    gap: 10px;
+    width: 300px;
+}
+
+.input-container span {
+    margin-right: auto; /* 使span靠左 */
+}
+
+.input-container input {
+    margin-left: auto; /* 使input靠右 */
+}
